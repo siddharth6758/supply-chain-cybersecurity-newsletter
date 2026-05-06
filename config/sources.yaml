@@ -1,0 +1,81 @@
+rss_feeds:
+  supply_chain_news:
+    - name: "BleepingComputer"
+      url: "https://www.bleepingcomputer.com/feed/"
+    - name: "The Hacker News"
+      url: "https://feeds.feedburner.com/TheHackersNews"
+    - name: "Krebs on Security"
+      url: "https://krebsonsecurity.com/feed/"
+    - name: "SANS ISC"
+      url: "https://isc.sans.edu/rssfeed_full.xml"
+    - name: "Schneier on Security"
+      url: "https://www.schneier.com/feed/atom/"
+    - name: "Socket Security Blog"
+      url: "https://socket.dev/blog/rss.xml"
+    - name: "Phylum Blog"
+      url: "https://blog.phylum.io/rss/"
+    - name: "CISA Advisories"
+      url: "https://www.cisa.gov/cybersecurity-advisories/all.xml"
+    - name: "OpenSSF Blog"
+      url: "https://openssf.org/feed/"
+    - name: "Snyk Blog"
+      url: "https://snyk.io/blog/feed/"
+
+  tool_releases:
+    - name: "Trivy"
+      url: "https://github.com/aquasecurity/trivy/releases.atom"
+    - name: "Grype"
+      url: "https://github.com/anchore/grype/releases.atom"
+    - name: "Syft"
+      url: "https://github.com/anchore/syft/releases.atom"
+    - name: "Cosign"
+      url: "https://github.com/sigstore/cosign/releases.atom"
+    - name: "OSV-Scanner"
+      url: "https://github.com/google/osv-scanner/releases.atom"
+    - name: "OWASP Dependency-Check"
+      url: "https://github.com/jeremylong/DependencyCheck/releases.atom"
+    - name: "in-toto"
+      url: "https://github.com/in-toto/in-toto/releases.atom"
+    - name: "Rekor"
+      url: "https://github.com/sigstore/rekor/releases.atom"
+    - name: "Scorecard"
+      url: "https://github.com/ossf/scorecard/releases.atom"
+    - name: "CycloneDX CLI"
+      url: "https://github.com/CycloneDX/cyclonedx-cli/releases.atom"
+
+  ai_releases:
+    - name: "Anthropic Blog"
+      url: "https://www.anthropic.com/rss.xml"
+    - name: "OpenAI Blog"
+      url: "https://openai.com/blog/rss.xml"
+    - name: "Google DeepMind Blog"
+      url: "https://deepmind.google/blog/rss.xml"
+    - name: "Hugging Face Blog"
+      url: "https://huggingface.co/blog/feed.xml"
+
+apis:
+  osv:
+    base_url: "https://api.osv.dev/v1"
+    ecosystems:
+      - "npm"
+      - "PyPI"
+      - "Maven"
+      - "Go"
+      - "RubyGems"
+      - "NuGet"
+      - "Rust"
+
+  cisa_kev:
+    url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+
+  nvd:
+    base_url: "https://services.nvd.nist.gov/rest/json/cves/2.0"
+    keywords:
+      - "supply chain"
+      - "dependency confusion"
+      - "typosquatting"
+      - "malicious package"
+      - "build system"
+      - "CI/CD"
+      - "software bill of materials"
+      - "SBOM"

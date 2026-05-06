@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+*.db
+env/
+venv/
+technical_report.txt
+*.txt
+.claude/

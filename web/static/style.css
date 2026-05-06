@@ -1,0 +1,79 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --accent: #58a6ff;
+  --red: #f85149;
+  --orange: #d29922;
+  --yellow: #e3b341;
+  --green: #3fb950;
+  --purple: #bc8cff;
+  --radius: 8px;
+}
+
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+
+/* Header */
+header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; }
+.header-inner { max-width: 1400px; margin: 0 auto; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--text); }
+.logo-icon { font-size: 20px; color: var(--accent); }
+.meta { color: var(--muted); font-size: 13px; }
+
+/* Filter bar */
+.filter-bar { max-width: 1400px; margin: 20px auto 0; padding: 0 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-btn { padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); text-decoration: none; font-size: 13px; transition: all 0.15s; }
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+
+/* Grid */
+main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+/* Tile */
+.tile { display: flex; flex-direction: column; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-decoration: none; color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; cursor: pointer; }
+.tile:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+
+.tile-top { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* Badges */
+.badge { padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.badge-supply_chain_news { background: rgba(88,166,255,0.15); color: var(--accent); }
+.badge-tool_release      { background: rgba(63,185,80,0.15);  color: var(--green); }
+.badge-ai_release        { background: rgba(188,140,255,0.15); color: var(--purple); }
+
+.badge-sev-critical { background: rgba(248,81,73,0.2);  color: var(--red); }
+.badge-sev-high     { background: rgba(210,153,34,0.2);  color: var(--orange); }
+.badge-sev-medium   { background: rgba(227,179,65,0.2);  color: var(--yellow); }
+.badge-sev-low      { background: rgba(63,185,80,0.15);  color: var(--green); }
+.badge-sev-info     { background: rgba(139,148,158,0.15); color: var(--muted); }
+
+.tile-title { font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--text); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.tile-summary { font-size: 13px; color: var(--muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.tile-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+.source-name { font-size: 12px; font-weight: 600; color: var(--accent); }
+.tile-time { font-size: 11px; color: var(--muted); }
+
+.tile-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font-size: 11px; padding: 2px 7px; border-radius: 4px; background: rgba(139,148,158,0.1); color: var(--muted); }
+
+/* Pagination */
+.pagination { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 32px; }
+.page-btn { padding: 8px 18px; border: 1px solid var(--border); border-radius: var(--radius); color: var(--accent); text-decoration: none; font-size: 13px; transition: border-color 0.15s; }
+.page-btn:hover { border-color: var(--accent); }
+.page-info { color: var(--muted); font-size: 13px; }
+
+/* Empty state */
+.empty { text-align: center; padding: 80px 24px; color: var(--muted); }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+  .filter-bar { padding: 0 16px; }
+  main { padding: 16px; }
+}
