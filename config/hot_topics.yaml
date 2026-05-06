@@ -1,0 +1,75 @@
+topics:
+  - name: "Claude Mythos"
+    type: "ai"
+    label: "AI Model"
+    keywords: ["claude mythos", "mythos", "anthropic mythos"]
+
+  - name: "AI in Cybersecurity"
+    type: "ai"
+    label: "AI Tools"
+    keywords: ["ai security", "llm security", "ai-powered attack", "ai threat", "generative ai security", "ai vulnerability", "ai exploit", "machine learning attack"]
+
+  - name: "New AI Model Releases"
+    type: "ai"
+    label: "AI Release"
+    keywords: ["claude", "gpt-", "gemini", "llama", "mistral", "model release", "foundation model", "openai release", "anthropic release"]
+
+  - name: "Supply Chain Attacks"
+    type: "threat"
+    label: "Attack"
+    keywords: ["supply chain attack", "dependency confusion", "typosquatting", "malicious package", "malicious npm", "malicious pypi", "poisoned package", "compromised package", "backdoor package"]
+
+  - name: "CI/CD Attacks"
+    type: "threat"
+    label: "Attack"
+    keywords: ["ci/cd attack", "pipeline attack", "github actions", "jenkins exploit", "build system attack", "build pipeline", "github compromise", "ci pipeline"]
+
+  - name: "Zero Day"
+    type: "threat"
+    label: "Vulnerability"
+    keywords: ["zero-day", "zero day", "0-day", "0day", "unpatched vulnerability"]
+
+  - name: "Ransomware"
+    type: "threat"
+    label: "Attack"
+    keywords: ["ransomware", "ransom attack", "ransomware group", "double extortion"]
+
+  - name: "CycloneDX"
+    type: "sbom"
+    label: "SBOM"
+    keywords: ["cyclonedx", "cdx", "cyclone dx"]
+
+  - name: "SPDX"
+    type: "sbom"
+    label: "SBOM"
+    keywords: ["spdx", "software package data exchange"]
+
+  - name: "SBOM"
+    type: "sbom"
+    label: "SBOM"
+    keywords: ["sbom", "software bill of materials", "bill of materials"]
+
+  - name: "Software Signing"
+    type: "sbom"
+    label: "Standards"
+    keywords: ["sigstore", "cosign", "software signing", "artifact signing", "code signing", "rekor", "fulcio"]
+
+  - name: "Trivy"
+    type: "tool"
+    label: "Security Tool"
+    keywords: ["trivy", "aqua trivy"]
+
+  - name: "Grype / Syft"
+    type: "tool"
+    label: "Security Tool"
+    keywords: ["grype", "syft", "anchore"]
+
+  - name: "OSV / Scorecard"
+    type: "tool"
+    label: "Security Tool"
+    keywords: ["osv-scanner", "osv.dev", "openssf scorecard", "scorecard", "deps.dev"]
+
+  - name: "SLSA Framework"
+    type: "sbom"
+    label: "Standards"
+    keywords: ["slsa", "supply chain levels for software artifacts", "slsa provenance"]

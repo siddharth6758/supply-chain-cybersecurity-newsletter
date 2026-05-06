@@ -56,14 +56,40 @@ rss_feeds:
 apis:
   osv:
     base_url: "https://api.osv.dev/v1"
-    ecosystems:
-      - "npm"
-      - "PyPI"
-      - "Maven"
-      - "Go"
-      - "RubyGems"
-      - "NuGet"
-      - "Rust"
+    packages:
+      PyPI:
+        - "requests"
+        - "setuptools"
+        - "cryptography"
+        - "paramiko"
+        - "django"
+        - "flask"
+        - "pillow"
+        - "urllib3"
+      npm:
+        - "lodash"
+        - "express"
+        - "axios"
+        - "minimist"
+        - "semver"
+        - "tar"
+        - "node-fetch"
+        - "webpack"
+      Go:
+        - "golang.org/x/crypto"
+        - "golang.org/x/net"
+        - "github.com/golang/protobuf"
+      Maven:
+        - "org.apache.logging.log4j:log4j-core"
+        - "commons-collections:commons-collections"
+        - "org.apache.struts:struts2-core"
+      Rust:
+        - "openssl"
+        - "tokio"
+        - "hyper"
+      NuGet:
+        - "Newtonsoft.Json"
+        - "Microsoft.AspNetCore"
 
   cisa_kev:
     url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"

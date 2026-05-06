@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supply Chain Security Tracker</title>
+  <title>Hot Topics — Supply Chain Security Tracker</title>
   <link rel="icon" id="favicon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
@@ -15,7 +15,7 @@
         <span>Supply Chain Tracker</span>
       </div>
       <div class="header-right">
-        <span class="meta">{{ total }} items tracked</span>
+        <span class="meta">{{ active_24h }} topic{% if active_24h != 1 %}s{% endif %} active today</span>
         <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()" title="Refresh">&#x21BB;</button>
       </div>
     </div>
@@ -26,71 +26,61 @@
   </div>
 
   <nav class="page-tabs">
-    <a href="/" class="page-tab active">Feed</a>
-    <a href="/hot-topics" class="page-tab">Hot Topics</a>
-  </nav>
-
-  <nav class="filter-bar">
-    {% for key, label in categories.items() %}
-    <a href="/?category={{ key }}"
-       class="filter-btn {% if active_category == key %}active{% endif %}">
-      {{ label }}
-    </a>
-    {% endfor %}
+    <a href="/" class="page-tab">Feed</a>
+    <a href="/hot-topics" class="page-tab active">Hot Topics</a>
   </nav>
 
   <main>
-    {% if items %}
-    <div class="grid">
-      {% for item in items %}
-      <a class="tile" href="{{ item.source_url }}" target="_blank" rel="noopener" data-fetched-at="{{ item.fetched_at }}">
-        <div class="tile-top">
-          <span class="badge badge-{{ item.category }}">
-            {% if item.category == 'supply_chain_news' %}Supply Chain
-            {% elif item.category == 'tool_release' %}Tool Release
-            {% elif item.category == 'ai_release' %}AI / LLM
-            {% else %}{{ item.category }}{% endif %}
-          </span>
-          {% if item.severity %}
-          <span class="badge badge-sev-{{ item.severity | lower }}">{{ item.severity }}</span>
+    {% if topics %}
+    <div class="topics-grid">
+      {% for topic in topics %}
+      <div class="topic-card type-{{ topic.type }}" onclick="window.location.href='/topics/{{ topic.slug }}'" role="button" tabindex="0">
+        <div class="topic-header">
+          <div class="topic-name-row">
+            <span class="topic-name">{{ topic.name }}</span>
+            {% if topic.label %}
+            <span class="topic-label label-{{ topic.type }}">{{ topic.label }}</span>
+            {% endif %}
+          </div>
+          {% if topic.count_24h >= 3 %}
+            <span class="topic-status status-trending">Trending</span>
+          {% elif topic.count_24h >= 1 %}
+            <span class="topic-status status-active">Active</span>
+          {% elif topic.count_7d > 0 %}
+            <span class="topic-status status-week">This week</span>
+          {% else %}
+            <span class="topic-status status-quiet">Quiet</span>
           {% endif %}
         </div>
 
-        <h3 class="tile-title">{{ item.title }}</h3>
-
-        {% if item.summary %}
-        <p class="tile-summary">{{ item.summary }}</p>
-        {% endif %}
-
-        <div class="tile-footer">
-          <span class="source-name">{{ item.source_name }}</span>
-          <span class="tile-time">{{ item.fetched_at[:16].replace('T', ' ') }} UTC</span>
+        <div class="topic-counts">
+          <span class="count-today">{{ topic.count_24h }} today</span>
+          <span class="count-sep">&middot;</span>
+          <span>{{ topic.count_7d }} this week</span>
         </div>
 
-        {% if item.tags %}
-        <div class="tile-tags">
-          {% for tag in item.tags %}
-          <span class="tag">{{ tag }}</span>
-          {% endfor %}
+        <div class="topic-items">
+          {% if topic.latest %}
+            {% for item in topic.latest %}
+            <a class="topic-item" href="{{ item.source_url }}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <span class="topic-item-title">{{ item.title }}</span>
+              <span class="topic-item-time">{{ item.fetched_at[5:16].replace('T', ' ') }}</span>
+            </a>
+            {% endfor %}
+          {% else %}
+            <p class="topic-no-items">No items yet</p>
+          {% endif %}
         </div>
+
+        {% if topic.count_7d > 5 %}
+        <div class="topic-viewall">View all {{ topic.count_7d }} items &rarr;</div>
         {% endif %}
-      </a>
+      </div>
       {% endfor %}
     </div>
-
-    <div class="pagination">
-      {% if page > 1 %}
-      <a href="/?category={{ active_category }}&page={{ page - 1 }}" class="page-btn">&laquo; Prev</a>
-      {% endif %}
-      <span class="page-info">Page {{ page }} / {{ total_pages }}</span>
-      {% if page < total_pages %}
-      <a href="/?category={{ active_category }}&page={{ page + 1 }}" class="page-btn">Next &raquo;</a>
-      {% endif %}
-    </div>
-
     {% else %}
     <div class="empty">
-      <p>No items yet. The tracker will populate once the scheduler runs.</p>
+      <p>No topic data yet. The tracker will populate once the scheduler runs.</p>
     </div>
     {% endif %}
   </main>
@@ -116,13 +106,11 @@
 
     img.onload = () => {
       ctx.drawImage(img, 0, 0, 32, 32);
-
       if (dotCount > 0) {
         ctx.beginPath();
         ctx.arc(25, 7, 8, 0, 2 * Math.PI);
         ctx.fillStyle = '#f85149';
         ctx.fill();
-
         if (dotCount < 100) {
           ctx.fillStyle = '#ffffff';
           ctx.font = 'bold 9px sans-serif';
@@ -131,12 +119,10 @@
           ctx.fillText(dotCount > 99 ? '99+' : String(dotCount), 25, 7);
         }
       }
-
       const link = document.getElementById('favicon');
       link.type = 'image/png';
       link.href = canvas.toDataURL('image/png');
     };
-
     img.src = '{{ url_for("static", filename="favicon.svg") }}';
   }
 
@@ -157,24 +143,9 @@
     }
   });
 
-  const prevLastSeen = getLastSeen();
   setLastSeen();
   drawFavicon(0);
-  markNewItems(prevLastSeen);
   setInterval(checkUnread, POLL_MS);
-
-  function markNewItems(since) {
-    if (since === '1970-01-01T00:00:00.000Z') return;
-    document.querySelectorAll('.tile[data-fetched-at]').forEach(tile => {
-      if (tile.dataset.fetchedAt > since) {
-        tile.classList.add('is-new');
-        const badge = document.createElement('span');
-        badge.className = 'badge badge-new';
-        badge.textContent = 'NEW';
-        tile.querySelector('.tile-top').prepend(badge);
-      }
-    });
-  }
 
   function triggerRefresh() {
     const btn     = document.getElementById('refreshBtn');

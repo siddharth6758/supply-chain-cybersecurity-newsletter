@@ -12,37 +12,38 @@ def _load_sources() -> dict:
 
 
 def _fetch_osv() -> list[dict]:
-    """Fetch recent supply chain vulnerabilities from OSV.dev."""
+    """Fetch vulnerabilities from OSV.dev for a watchlist of high-value packages."""
     sources = _load_sources()
-    ecosystems = sources.get("apis", {}).get("osv", {}).get("ecosystems", [])
+    packages_cfg = sources.get("apis", {}).get("osv", {}).get("packages", {})
     base_url = sources["apis"]["osv"]["base_url"]
     items = []
 
-    for ecosystem in ecosystems:
-        try:
-            resp = requests.post(
-                f"{base_url}/query",
-                json={"package": {"ecosystem": ecosystem}},
-                timeout=REQUEST_TIMEOUT,
-            )
-            resp.raise_for_status()
-            for vuln in resp.json().get("vulns", [])[:20]:
-                vuln_id = vuln.get("id", "")
-                summary = vuln.get("summary", "")
-                modified = vuln.get("modified", "")
-                aliases = vuln.get("aliases", [])
-                cve = next((a for a in aliases if a.startswith("CVE-")), vuln_id)
+    for ecosystem, packages in packages_cfg.items():
+        for package_name in packages:
+            try:
+                resp = requests.post(
+                    f"{base_url}/query",
+                    json={"package": {"name": package_name, "ecosystem": ecosystem}},
+                    timeout=REQUEST_TIMEOUT,
+                )
+                resp.raise_for_status()
+                for vuln in resp.json().get("vulns", [])[:5]:
+                    vuln_id = vuln.get("id", "")
+                    summary = vuln.get("summary", "")
+                    modified = vuln.get("modified", "")
+                    aliases = vuln.get("aliases", [])
+                    cve = next((a for a in aliases if a.startswith("CVE-")), vuln_id)
 
-                items.append({
-                    "title": f"[{ecosystem}] {cve}: {summary}",
-                    "source_url": f"https://osv.dev/vulnerability/{vuln_id}",
-                    "source_name": f"OSV.dev ({ecosystem})",
-                    "category": "supply_chain_news",
-                    "published_at": modified,
-                    "raw_content": summary,
-                })
-        except Exception as e:
-            print(f"[OSV] Failed for {ecosystem}: {e}")
+                    items.append({
+                        "title": f"[{ecosystem}/{package_name}] {cve}: {summary}",
+                        "source_url": f"https://osv.dev/vulnerability/{vuln_id}",
+                        "source_name": f"OSV.dev ({ecosystem})",
+                        "category": "supply_chain_news",
+                        "published_at": modified,
+                        "raw_content": summary,
+                    })
+            except Exception as e:
+                print(f"[OSV] Failed for {ecosystem}/{package_name}: {e}")
 
     return items
 

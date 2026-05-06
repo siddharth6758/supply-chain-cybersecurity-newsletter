@@ -119,6 +119,63 @@ def get_count_since(since_iso: str) -> int:
         return row[0]
 
 
+def get_topic_items(keywords: list[str], page: int = 1, per_page: int = 50) -> dict:
+    """Paginated full item list for a topic."""
+    like_clauses = " OR ".join(
+        ["LOWER(title) LIKE ? OR LOWER(summary) LIKE ?" for _ in keywords]
+    )
+    like_params = []
+    for kw in keywords:
+        p = f"%{kw.lower()}%"
+        like_params.extend([p, p])
+
+    offset = (page - 1) * per_page
+    with get_conn() as conn:
+        total = conn.execute(
+            f"SELECT COUNT(*) FROM news_items WHERE ({like_clauses})",
+            like_params,
+        ).fetchone()[0]
+        rows = conn.execute(
+            f"""SELECT * FROM news_items WHERE ({like_clauses})
+               ORDER BY fetched_at DESC LIMIT ? OFFSET ?""",
+            like_params + [per_page, offset],
+        ).fetchall()
+    return {"items": [dict(r) for r in rows], "total": total, "page": page, "per_page": per_page}
+
+
+def get_topic_data(keywords: list[str]) -> dict:
+    """Return 24h count, 7d count, and latest 5 items for a topic defined by keywords."""
+    like_clauses = " OR ".join(
+        ["LOWER(title) LIKE ? OR LOWER(summary) LIKE ?" for _ in keywords]
+    )
+    like_params = []
+    for kw in keywords:
+        p = f"%{kw.lower()}%"
+        like_params.extend([p, p])
+
+    with get_conn() as conn:
+        count_24h = conn.execute(
+            f"SELECT COUNT(*) FROM news_items WHERE ({like_clauses}) AND fetched_at >= datetime('now', '-1 days')",
+            like_params,
+        ).fetchone()[0]
+
+        count_7d = conn.execute(
+            f"SELECT COUNT(*) FROM news_items WHERE ({like_clauses}) AND fetched_at >= datetime('now', '-7 days')",
+            like_params,
+        ).fetchone()[0]
+
+        rows = conn.execute(
+            f"SELECT * FROM news_items WHERE ({like_clauses}) ORDER BY fetched_at DESC LIMIT 5",
+            like_params,
+        ).fetchall()
+
+    return {
+        "count_24h": count_24h,
+        "count_7d": count_7d,
+        "latest": [dict(r) for r in rows],
+    }
+
+
 def log_digest(item_count: int):
     with get_conn() as conn:
         conn.execute(

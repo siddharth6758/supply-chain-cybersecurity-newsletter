@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supply Chain Security Tracker</title>
+  <title>{{ topic.name }} — Supply Chain Security Tracker</title>
   <link rel="icon" id="favicon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
@@ -15,7 +15,7 @@
         <span>Supply Chain Tracker</span>
       </div>
       <div class="header-right">
-        <span class="meta">{{ total }} items tracked</span>
+        <span class="meta">{{ total }} item{% if total != 1 %}s{% endif %}</span>
         <button class="refresh-btn" id="refreshBtn" onclick="triggerRefresh()" title="Refresh">&#x21BB;</button>
       </div>
     </div>
@@ -26,20 +26,22 @@
   </div>
 
   <nav class="page-tabs">
-    <a href="/" class="page-tab active">Feed</a>
-    <a href="/hot-topics" class="page-tab">Hot Topics</a>
-  </nav>
-
-  <nav class="filter-bar">
-    {% for key, label in categories.items() %}
-    <a href="/?category={{ key }}"
-       class="filter-btn {% if active_category == key %}active{% endif %}">
-      {{ label }}
-    </a>
-    {% endfor %}
+    <a href="/" class="page-tab">Feed</a>
+    <a href="/hot-topics" class="page-tab active">Hot Topics</a>
   </nav>
 
   <main>
+    <div class="topic-detail-header">
+      <a href="/hot-topics" class="back-link">&larr; Hot Topics</a>
+      <div class="topic-detail-title">
+        <h1>{{ topic.name }}</h1>
+        {% if topic.label %}
+        <span class="topic-label label-{{ topic.type }}">{{ topic.label }}</span>
+        {% endif %}
+      </div>
+      <p class="topic-detail-count">{{ total }} item{% if total != 1 %}s{% endif %} found</p>
+    </div>
+
     {% if items %}
     <div class="grid">
       {% for item in items %}
@@ -80,17 +82,17 @@
 
     <div class="pagination">
       {% if page > 1 %}
-      <a href="/?category={{ active_category }}&page={{ page - 1 }}" class="page-btn">&laquo; Prev</a>
+      <a href="/topics/{{ topic.slug }}?page={{ page - 1 }}" class="page-btn">&laquo; Prev</a>
       {% endif %}
       <span class="page-info">Page {{ page }} / {{ total_pages }}</span>
       {% if page < total_pages %}
-      <a href="/?category={{ active_category }}&page={{ page + 1 }}" class="page-btn">Next &raquo;</a>
+      <a href="/topics/{{ topic.slug }}?page={{ page + 1 }}" class="page-btn">Next &raquo;</a>
       {% endif %}
     </div>
 
     {% else %}
     <div class="empty">
-      <p>No items yet. The tracker will populate once the scheduler runs.</p>
+      <p>No items found for this topic yet.</p>
     </div>
     {% endif %}
   </main>
@@ -113,16 +115,13 @@
     canvas.height = 32;
     const ctx = canvas.getContext('2d');
     const img = new Image();
-
     img.onload = () => {
       ctx.drawImage(img, 0, 0, 32, 32);
-
       if (dotCount > 0) {
         ctx.beginPath();
         ctx.arc(25, 7, 8, 0, 2 * Math.PI);
         ctx.fillStyle = '#f85149';
         ctx.fill();
-
         if (dotCount < 100) {
           ctx.fillStyle = '#ffffff';
           ctx.font = 'bold 9px sans-serif';
@@ -131,12 +130,10 @@
           ctx.fillText(dotCount > 99 ? '99+' : String(dotCount), 25, 7);
         }
       }
-
       const link = document.getElementById('favicon');
       link.type = 'image/png';
       link.href = canvas.toDataURL('image/png');
     };
-
     img.src = '{{ url_for("static", filename="favicon.svg") }}';
   }
 
@@ -151,10 +148,7 @@
   }
 
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-      drawFavicon(0);
-      setLastSeen();
-    }
+    if (!document.hidden) { drawFavicon(0); setLastSeen(); }
   });
 
   const prevLastSeen = getLastSeen();
