@@ -1,5 +1,6 @@
 rss_feeds:
   supply_chain_news:
+    # --- Global cybersecurity specialists ---
     - name: "BleepingComputer"
       url: "https://www.bleepingcomputer.com/feed/"
     - name: "The Hacker News"
@@ -10,6 +11,27 @@ rss_feeds:
       url: "https://isc.sans.edu/rssfeed_full.xml"
     - name: "Schneier on Security"
       url: "https://www.schneier.com/feed/atom/"
+    - name: "Dark Reading"
+      url: "https://www.darkreading.com/rss.xml"
+    - name: "SecurityWeek"
+      url: "https://www.securityweek.com/feed/"
+    - name: "The Record"
+      url: "https://therecord.media/feed"
+    - name: "CyberScoop"
+      url: "https://cyberscoop.com/feed/"
+    - name: "Help Net Security"
+      url: "https://www.helpnetsecurity.com/feed/"
+    - name: "Infosecurity Magazine"
+      url: "https://www.infosecurity-magazine.com/rss/news/"
+    - name: "SC Magazine"
+      url: "https://www.scmagazine.com/feed"
+    - name: "Wired Security"
+      url: "https://www.wired.com/feed/category/security/latest/rss"
+    - name: "Ars Technica Security"
+      url: "https://feeds.arstechnica.com/arstechnica/security"
+    - name: "TechCrunch Security"
+      url: "https://techcrunch.com/category/security/feed/"
+    # --- Supply chain specific ---
     - name: "Socket Security Blog"
       url: "https://socket.dev/blog/rss.xml"
     - name: "Phylum Blog"
@@ -20,6 +42,21 @@ rss_feeds:
       url: "https://openssf.org/feed/"
     - name: "Snyk Blog"
       url: "https://snyk.io/blog/feed/"
+    # --- Indian outlets ---
+    - name: "Times of India Tech"
+      url: "https://timesofindia.indiatimes.com/rss/4719148.cms"
+    - name: "Economic Times Tech"
+      url: "https://economictimes.indiatimes.com/tech/rss.cms"
+    - name: "India Today Tech"
+      url: "https://www.indiatoday.in/rss/1206514"
+    - name: "NDTV Tech"
+      url: "https://feeds.feedburner.com/ndtvnews-tech-news"
+    - name: "Business Standard Tech"
+      url: "https://www.business-standard.com/rss/technology-108.rss"
+    - name: "Hindustan Times Tech"
+      url: "https://www.hindustantimes.com/feeds/rss/technology/rssfeed.xml"
+    - name: "The Ken"
+      url: "https://the-ken.com/feed/"
 
   tool_releases:
     - name: "Trivy"
@@ -52,6 +89,14 @@ rss_feeds:
       url: "https://deepmind.google/blog/rss.xml"
     - name: "Hugging Face Blog"
       url: "https://huggingface.co/blog/feed.xml"
+    - name: "MIT Technology Review"
+      url: "https://www.technologyreview.com/feed/"
+    - name: "VentureBeat AI"
+      url: "https://venturebeat.com/category/ai/feed/"
+    - name: "TechCrunch AI"
+      url: "https://techcrunch.com/category/artificial-intelligence/feed/"
+    - name: "The Verge AI"
+      url: "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml"
 
 apis:
   osv:

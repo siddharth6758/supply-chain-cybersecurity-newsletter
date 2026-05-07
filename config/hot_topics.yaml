@@ -2,7 +2,13 @@ topics:
   - name: "Claude Mythos"
     type: "ai"
     label: "AI Model"
-    keywords: ["claude mythos", "mythos", "anthropic mythos"]
+    keywords: [
+      "claude mythos", "mythos", "anthropic mythos",
+      "mythos model", "mythos claude", "mythos ai",
+      "mythos security", "mythos vulnerability", "mythos zero-day",
+      "mythos cybersecurity", "mythos agentic", "mythos agent",
+      "anthropic new model", "anthropic latest model"
+    ]
 
   - name: "AI in Cybersecurity"
     type: "ai"
